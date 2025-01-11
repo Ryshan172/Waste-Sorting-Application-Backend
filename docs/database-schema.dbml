@@ -1,0 +1,22 @@
+Table WasteCategories {
+  id int [pk, increment] // Primary key
+  name varchar
+  description varchar
+}
+
+Table DisposalGuidelines {
+  disposalGuidelineId int [pk, increment] // Primary key
+  wasteCategoryId int [ref: > WasteCategories.id] // Foreign key
+  guideline varchar
+}
+
+Table RecyclingTips {
+  recyclingTipsId int [pk, increment] // Primary key
+  wasteCategoryId int [ref: > WasteCategories.id] // Foreign key
+  tip varchar
+}
+
+Table WasteItems {
+  wasteItemId int [pk, increment] // Primary key
+  wasteCategoryId int [ref: > WasteCategories.id] // Foreign key
+}
