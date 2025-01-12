@@ -1,5 +1,7 @@
 package com.enviro.assessment.grad001.ryshanramlall.service;
 
+import com.enviro.assessment.grad001.ryshanramlall.dto.DisposalGuidelineDTO;
+import com.enviro.assessment.grad001.ryshanramlall.dto.DisposalGuidelineResponseDTO;
 import com.enviro.assessment.grad001.ryshanramlall.model.DisposalGuideline;
 import com.enviro.assessment.grad001.ryshanramlall.model.WasteCategory;
 import com.enviro.assessment.grad001.ryshanramlall.repository.DisposalGuidelineRepository;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DisposalGuidelineService {
@@ -19,44 +22,63 @@ public class DisposalGuidelineService {
     @Autowired
     private WasteCategoryRepository wasteCategoryRepository;
 
-    public List<DisposalGuideline> getAllGuidelines() {
-        return repository.findAll();
+    // Retrieve all disposal guidelines as a list of Response DTOs
+    public List<DisposalGuidelineResponseDTO> getAllGuidelines() {
+        List<DisposalGuideline> guidelines = repository.findAll();
+        return guidelines.stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
-    public DisposalGuideline saveGuideline(DisposalGuideline guideline) {
-        Long wasteCategoryId = guideline.getWasteCategory().getId();
-        WasteCategory wasteCategory = wasteCategoryRepository.findById(wasteCategoryId).orElse(null);
+    // Save a new disposal guideline from Request DTO
+    public DisposalGuidelineResponseDTO saveGuideline(DisposalGuidelineDTO guidelineDTO) {
+        // Find the associated waste category by its name
+        WasteCategory wasteCategory = wasteCategoryRepository.findById(guidelineDTO.getWasteCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid waste category ID"));
 
-        if (wasteCategory != null) {
-            guideline.setWasteCategory(wasteCategory);
-            return repository.save(guideline);
-        }
+        // Convert DTO to entity and associate with waste category
+        DisposalGuideline guideline = toEntity(guidelineDTO);
+        guideline.setWasteCategory(wasteCategory);
 
-        throw new IllegalArgumentException("Invalid waste category ID");
+        // Save and convert to response DTO
+        DisposalGuideline savedGuideline = repository.save(guideline);
+        return toResponseDTO(savedGuideline);
     }
 
-    public DisposalGuideline updateGuideline(Long id, DisposalGuideline updatedGuideline) {
-        // Fetch the existing guideline
-        DisposalGuideline existingGuideline = repository.findById(id).orElse(null);
-
-        if (existingGuideline != null) {
-            // Only update the guideline text, not the waste category
-            existingGuideline.setGuideline(updatedGuideline.getGuideline());
-
-            // Save and return the updated guideline
-            return repository.save(existingGuideline);
-        }
-
-        throw new IllegalArgumentException("Disposal guideline not found for the provided ID");
+    // Update a disposal guideline by ID
+    public Optional<DisposalGuidelineResponseDTO> updateGuideline(Long id, DisposalGuidelineDTO guidelineDTO) {
+        return repository.findById(id).map(existingGuideline -> {
+            existingGuideline.setGuideline(guidelineDTO.getGuideline());
+            DisposalGuideline updatedGuideline = repository.save(existingGuideline);
+            return toResponseDTO(updatedGuideline);
+        });
     }
 
-    // Fetch a guideline by ID (used for checking existence)
-    public Optional<DisposalGuideline> getGuidelineById(Long id) {
-        return repository.findById(id);
+    // Retrieve a single disposal guideline by ID as a Response DTO
+    public Optional<DisposalGuidelineResponseDTO> getGuidelineById(Long id) {
+        return repository.findById(id)
+                .map(this::toResponseDTO);
     }
 
-    // Delete a guideline by ID
+    // Delete a disposal guideline by ID
     public void deleteGuideline(Long id) {
         repository.deleteById(id);
+    }
+
+    // Convert DisposalGuideline entity to Response DTO
+    private DisposalGuidelineResponseDTO toResponseDTO(DisposalGuideline guideline) {
+        DisposalGuidelineResponseDTO responseDTO = new DisposalGuidelineResponseDTO();
+        responseDTO.setId(guideline.getDisposalGuidelineId()); // Updated to use the correct getter
+        responseDTO.setGuideline(guideline.getGuideline());
+        responseDTO.setWasteCategoryId(guideline.getWasteCategory().getId()); // Assumes WasteCategory has a getId() method
+        responseDTO.setWasteCategoryName(guideline.getWasteCategory().getName());
+        return responseDTO;
+    }
+
+    // Convert Request DTO to DisposalGuideline entity
+    private DisposalGuideline toEntity(DisposalGuidelineDTO guidelineDTO) {
+        DisposalGuideline guideline = new DisposalGuideline();
+        guideline.setGuideline(guidelineDTO.getGuideline());
+        return guideline;
     }
 }

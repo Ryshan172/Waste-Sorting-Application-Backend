@@ -1,8 +1,8 @@
 package com.enviro.assessment.grad001.ryshanramlall.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+
 import java.util.List;
 
 @Entity
@@ -18,11 +18,10 @@ public class WasteCategory {
 
     private String description;
 
-    @JsonManagedReference
+    // Bidirectional relationships should remain here but will not be exposed via DTOs
     @OneToMany(mappedBy = "wasteCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DisposalGuideline> disposalGuidelines;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "wasteCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecyclingTip> recyclingTips;
 

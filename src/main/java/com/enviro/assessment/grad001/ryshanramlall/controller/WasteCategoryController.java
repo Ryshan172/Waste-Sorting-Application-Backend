@@ -1,6 +1,7 @@
 package com.enviro.assessment.grad001.ryshanramlall.controller;
 
-import com.enviro.assessment.grad001.ryshanramlall.model.WasteCategory;
+import com.enviro.assessment.grad001.ryshanramlall.dto.WasteCategoryDTO;
+import com.enviro.assessment.grad001.ryshanramlall.dto.WasteCategoryResponseDTO;
 import com.enviro.assessment.grad001.ryshanramlall.service.WasteCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,34 +16,37 @@ public class WasteCategoryController {
     @Autowired
     private WasteCategoryService service;
 
+    // Retrieve all waste categories
     @GetMapping
-    public List<WasteCategory> getAllCategories() {
+    public List<WasteCategoryResponseDTO> getAllCategories() {
+        // The service returns a list of DTOs instead of entities
         return service.getAllCategories();
     }
 
+    // Create a new waste category
     @PostMapping
-    public ResponseEntity<WasteCategory> createCategory(@RequestBody WasteCategory category) {
-        return ResponseEntity.ok(service.saveCategory(category));
+    public ResponseEntity<WasteCategoryResponseDTO> createCategory(@RequestBody WasteCategoryDTO categoryDTO) {
+        // Accepts a DTO as input and returns a response DTO
+        WasteCategoryResponseDTO createdCategory = service.saveCategory(categoryDTO);
+        return ResponseEntity.ok(createdCategory);
     }
 
+    // Update an existing waste category
     @PutMapping("/{id}")
-    public ResponseEntity<WasteCategory> updateCategory(@PathVariable Long id, @RequestBody WasteCategory category) {
-        return service.getCategoryById(id).map(existingCategory -> {
-            existingCategory.setName(category.getName());
-            existingCategory.setDescription(category.getDescription());
-            WasteCategory updatedCategory = service.saveCategory(existingCategory);
-            return ResponseEntity.ok(updatedCategory);
-        }).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<WasteCategoryResponseDTO> updateCategory(@PathVariable Long id, @RequestBody WasteCategoryDTO categoryDTO) {
+        // The service handles updating the entity and returns a response DTO
+        return service.updateCategory(id, categoryDTO)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Delete a waste category
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         if (service.getCategoryById(id).isPresent()) {
-            // If the category exists, delete it
             service.deleteCategory(id);
-            return ResponseEntity.noContent().build(); // Return 204 No Content on successful deletion
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build(); // Return 404 if not found
+        return ResponseEntity.notFound().build();
     }
-
 }
