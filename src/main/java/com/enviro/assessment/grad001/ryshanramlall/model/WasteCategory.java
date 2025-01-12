@@ -1,7 +1,9 @@
 package com.enviro.assessment.grad001.ryshanramlall.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name = "waste_categories")
@@ -14,13 +16,15 @@ public class WasteCategory {
     @NotEmpty(message = "Name must not be empty")
     private String name;
 
-    @NotEmpty(message = "Disposal guidelines must not be empty")
-    @Column(length = 1000)
-    private String disposalGuidelines;
+    private String description;
 
-    @NotEmpty(message = "Recycling tips must not be empty")
-    @Column(length = 1000)
-    private String recyclingTips;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "wasteCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DisposalGuideline> disposalGuidelines;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "wasteCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecyclingTip> recyclingTips;
 
     // Getters and Setters
     public Long getId() {
@@ -39,19 +43,27 @@ public class WasteCategory {
         this.name = name;
     }
 
-    public String getDisposalGuidelines() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<DisposalGuideline> getDisposalGuidelines() {
         return disposalGuidelines;
     }
 
-    public void setDisposalGuidelines(String disposalGuidelines) {
+    public void setDisposalGuidelines(List<DisposalGuideline> disposalGuidelines) {
         this.disposalGuidelines = disposalGuidelines;
     }
 
-    public String getRecyclingTips() {
+    public List<RecyclingTip> getRecyclingTips() {
         return recyclingTips;
     }
 
-    public void setRecyclingTips(String recyclingTips) {
+    public void setRecyclingTips(List<RecyclingTip> recyclingTips) {
         this.recyclingTips = recyclingTips;
     }
 }

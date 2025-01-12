@@ -15,8 +15,3 @@ Table RecyclingTips {
   wasteCategoryId int [ref: > WasteCategories.id] // Foreign key
   tip varchar
 }
-
-Table WasteItems {
-  wasteItemId int [pk, increment] // Primary key
-  wasteCategoryId int [ref: > WasteCategories.id] // Foreign key
-}
