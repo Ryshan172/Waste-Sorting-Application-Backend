@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.enviro.assessment.grad001</groupId>
-	<artifactId>waste-sorting-backend</artifactId>
+	<artifactId>waste-sorting-grad001ryshanramlall</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Waste Sorting Backend</name>
 	<description>Waste Sorting SpringBoot REST API Application</description>
