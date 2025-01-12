@@ -11,7 +11,7 @@ Table DisposalGuidelines {
 }
 
 Table RecyclingTips {
-  recyclingTipsId int [pk, increment] // Primary key
+  recyclingTipId int [pk, increment] // Primary key
   wasteCategoryId int [ref: > WasteCategories.id] // Foreign key
   tip varchar
 }
