@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DisposalGuidelineRepository extends JpaRepository<DisposalGuideline, Long> {
+    //   Repository interface for managing DisposalGuideline entities
 }

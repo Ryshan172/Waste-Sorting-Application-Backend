@@ -15,6 +15,7 @@ public class RecyclingTip {
     @NotEmpty(message = "Tip must not be empty")
     private String tip;
 
+    // All entries on Recycling_Tips table are linked to the Waste_Category table
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "waste_category_id", nullable = false)

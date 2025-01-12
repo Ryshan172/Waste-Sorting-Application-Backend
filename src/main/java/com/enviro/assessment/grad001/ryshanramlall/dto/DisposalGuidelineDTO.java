@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class DisposalGuidelineDTO {
+    // Encapsulates data for entries in Disposal Guidelines table
 
     @NotEmpty(message = "Guideline must not be empty")
     private String guideline;

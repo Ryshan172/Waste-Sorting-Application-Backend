@@ -1,6 +1,7 @@
 package com.enviro.assessment.grad001.ryshanramlall.dto;
 
 public class RecyclingTipResponseDTO {
+    // For data being retrieved from Recycling Tips table.
     private Long id;
     private String tip;
     private Long wasteCategoryId;

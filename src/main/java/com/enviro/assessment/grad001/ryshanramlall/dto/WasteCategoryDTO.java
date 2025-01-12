@@ -1,6 +1,9 @@
 package com.enviro.assessment.grad001.ryshanramlall.dto;
 
 public class WasteCategoryDTO {
+    // Encapsulates data for entries in Waste Category table
+    // Captures and validates data
+
     private String name;
     private String description;
 

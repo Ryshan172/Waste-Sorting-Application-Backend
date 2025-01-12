@@ -22,13 +22,21 @@ public class RecyclingTipService {
     @Autowired
     private WasteCategoryRepository wasteCategoryRepository;
 
-    // Method to fetch all recycling tips and return the response DTOs
+    /**
+     * Gets all recycling tips and returns them as a list of response DTOs.
+     * @return list of RecyclingTipResponseDTO objects representing all recycling tips.
+     */
     public List<RecyclingTipResponseDTO> getAllTips() {
         List<RecyclingTip> tips = repository.findAll();
         return tips.stream().map(this::toResponseDTO).collect(Collectors.toList());
     }
 
-    // Method to save a new recycling tip from the RecyclingTipDTO
+    /**
+     * Adds a new recycling tip using the provided RecyclingTipDTO
+     * @param tipDTO the RecyclingTipDTO object containing the data to be saved.
+     * @return a RecyclingTipResponseDTO object representing the saved recycling tip.
+     * @throws IllegalArgumentException if provided waste category ID is invalid.
+     */
     public RecyclingTipResponseDTO saveTip(RecyclingTipDTO tipDTO) {
         Long wasteCategoryId = tipDTO.getWasteCategoryId();
         WasteCategory wasteCategory = wasteCategoryRepository.findById(wasteCategoryId)
@@ -44,11 +52,21 @@ public class RecyclingTipService {
         return toResponseDTO(savedTip);
     }
 
-    // Method to fetch a recycling tip by ID and return an Optional entity
+    /**
+     * Gets a recycling tip by its ID.
+     * @param id the ID of the recycling tip to retrieve.
+     * @return an Optional containing the RecyclingTip entity if found, or an empty Optional if not found.
+     */
     public Optional<RecyclingTip> getTipById(Long id) {
         return repository.findById(id);
     }
 
+    /**
+     * Updates recycling tip by its ID with the data from the provided RecyclingTipDTO.
+     * @param id the ID of the recycling tip to update.
+     * @param tipDTO the RecyclingTipDTO containing the updated data.
+     * @return an Optional containing the updated RecyclingTipResponseDTO or empty Optional
+     */
     public Optional<RecyclingTipResponseDTO> updateTip(Long id, RecyclingTipDTO tipDTO) {
         return repository.findById(id).map(existingTip -> {
             // Update the existing recycling tip with the new data from tipDTO
@@ -64,8 +82,11 @@ public class RecyclingTipService {
         });
     }
 
-
-    // Helper method to convert RecyclingTip entity to RecyclingTipResponseDTO
+    /**
+     * Converts a RecyclingTip entity to a RecyclingTipResponseDTO.
+     * @param tip the RecyclingTip entity to convert.
+     * @return a RecyclingTipResponseDTO representing the entity.
+     */
     private RecyclingTipResponseDTO toResponseDTO(RecyclingTip tip) {
         RecyclingTipResponseDTO responseDTO = new RecyclingTipResponseDTO();
         responseDTO.setId(tip.getRecyclingTipId());
@@ -75,7 +96,10 @@ public class RecyclingTipService {
         return responseDTO;
     }
 
-    // Method to delete a recycling tip
+    /**
+     * Deletes a recycling tip by its ID.
+     * @param id the ID of the recycling tip to delete.
+     */
     public void deleteTip(Long id) {
         repository.deleteById(id);
     }

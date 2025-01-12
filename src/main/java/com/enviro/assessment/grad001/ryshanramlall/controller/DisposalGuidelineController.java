@@ -13,6 +13,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/disposal-guidelines")
 public class DisposalGuidelineController {
+    /*
+     A RESTful controller that provides endpoints for managing Disposal Guidelines.
+     Interacts with DisposalGuidelineService.
+     */
 
     @Autowired
     private DisposalGuidelineService service;

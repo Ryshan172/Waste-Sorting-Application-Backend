@@ -17,7 +17,10 @@ public class WasteCategoryService {
     @Autowired
     private WasteCategoryRepository repository;
 
-    // Retrieve all waste categories as a list of Response DTOs
+    /**
+     * Retrieves all waste categories and returns as a list of response DTOs.
+     * @return a list of WasteCategoryResponseDTO objects representing all waste categories.
+     */
     public List<WasteCategoryResponseDTO> getAllCategories() {
         List<WasteCategory> categories = repository.findAll();
         return categories.stream()
@@ -25,20 +28,37 @@ public class WasteCategoryService {
                 .collect(Collectors.toList());
     }
 
-    // Save a new waste category from Request DTO
+    /**
+     * Adds a new waste category by converting the provided Request DTO to an entity,
+     * Adds to repository, and returns the saved category as a response.
+     * @param categoryDTO the WasteCategoryDTO object containing the data to be saved.
+     * @return a WasteCategoryResponseDTO object representing the saved waste category.
+     */
     public WasteCategoryResponseDTO saveCategory(WasteCategoryDTO categoryDTO) {
         WasteCategory category = toEntity(categoryDTO);
         WasteCategory savedCategory = repository.save(category);
         return toResponseDTO(savedCategory);
     }
 
-    // Retrieve a single waste category by ID as a Response DTO
+    /**
+     * Retrieves a waste category by ID and returns it as a response DTO.
+     * @param id the ID of the waste category to retrieve.
+     * @return Optional with WasteCategoryResponseDTO object if found,
+     *         or empty Optional if no category found
+     */
     public Optional<WasteCategoryResponseDTO> getCategoryById(Long id) {
+        // Optional is a container object
         return repository.findById(id)
                 .map(this::toResponseDTO);
     }
 
-    // Update a waste category by ID
+    /**
+     * Updates existing waste category by ID and field data
+     * @param id of the waste category to update.
+     * @param categoryDTO the WasteCategoryDTO containing the updated data e.g. name
+     * @return an Optional (Object) containing updated WasteCategoryResponseDTO object if updated or
+     *         empty Optional if the category was not found.
+     */
     public Optional<WasteCategoryResponseDTO> updateCategory(Long id, WasteCategoryDTO categoryDTO) {
         return repository.findById(id).map(existingCategory -> {
             existingCategory.setName(categoryDTO.getName());
@@ -48,12 +68,19 @@ public class WasteCategoryService {
         });
     }
 
-    // Delete a waste category by ID
+    /**
+     * Deletes waste category by its ID.
+     * @param id the ID of the waste category to delete.
+     */
     public void deleteCategory(Long id) {
         repository.deleteById(id);
     }
 
-    // Convert WasteCategory entity to Response DTO
+    /**
+     * Converts a WasteCategory entity to a WasteCategoryResponseDTO.
+     * @param category the WasteCategory entity to convert.
+     * @return a WasteCategoryResponseDTO representing the entity.
+     */
     private WasteCategoryResponseDTO toResponseDTO(WasteCategory category) {
         WasteCategoryResponseDTO responseDTO = new WasteCategoryResponseDTO();
         responseDTO.setId(category.getId());
@@ -62,7 +89,11 @@ public class WasteCategoryService {
         return responseDTO;
     }
 
-    // Convert Request DTO to WasteCategory entity
+    /**
+     * Converts a WasteCategoryDTO (Request DTO) to a WasteCategory entity.
+     * @param categoryDTO the WasteCategoryDTO object to convert.
+     * @return a WasteCategory entity.
+     */
     private WasteCategory toEntity(WasteCategoryDTO categoryDTO) {
         WasteCategory category = new WasteCategory();
         category.setName(categoryDTO.getName());

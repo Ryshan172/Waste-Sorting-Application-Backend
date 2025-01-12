@@ -16,11 +16,12 @@ public class DisposalGuideline {
     @Column(length = 1000) // Optional, to enforce a max length for guidelines
     private String guideline;
 
+    // All entries on Disposal_Guidelines table are linked to the Waste_Category table.
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "waste_category_id", nullable = false)
-
     private WasteCategory wasteCategory;
+
     // Getters and Setters
     public Long getDisposalGuidelineId() {
         return disposalGuidelineId;

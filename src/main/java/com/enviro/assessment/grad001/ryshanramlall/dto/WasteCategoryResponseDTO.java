@@ -1,6 +1,7 @@
 package com.enviro.assessment.grad001.ryshanramlall.dto;
 
 public class WasteCategoryResponseDTO {
+    // For data being retrieved from Waste Categories Table
 
     private Long id;
     private String name;

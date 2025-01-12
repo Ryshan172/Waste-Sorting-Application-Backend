@@ -6,5 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WasteCategoryRepository extends JpaRepository<WasteCategory, Long> {
-    // Custom queries can be added here if needed
+    /*
+        Repository interface for managing WasteCategory entities.
+        Extends JpaRepository to provide methods for database operations (save, update, delete).
+        Operations for database table Waste_Categories
+     */
 }

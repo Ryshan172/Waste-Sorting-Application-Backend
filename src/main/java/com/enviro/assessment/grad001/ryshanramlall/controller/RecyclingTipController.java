@@ -14,6 +14,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/recycling-tips")
 public class RecyclingTipController {
+    /*
+     A RESTful controller that provides endpoints for managing Recycling Tips.
+     Interacts with RecyclingTipService.
+     */
 
     @Autowired
     private RecyclingTipService service;

@@ -12,6 +12,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/waste-categories")
 public class WasteCategoryController {
+    /*
+     A RESTful controller that provides endpoints for managing Waste Categories.
+     Interacts with WasteCategoryService.
+     */
 
     @Autowired
     private WasteCategoryService service;

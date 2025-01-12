@@ -18,10 +18,13 @@ public class WasteCategory {
 
     private String description;
 
-    // Bidirectional relationships should remain here but will not be exposed via DTOs
+    // Bidirectional relationships remain here and not be via Data Transfer Objects (DTOs)
+    // Relationship with Disposal_Guidelines table
     @OneToMany(mappedBy = "wasteCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DisposalGuideline> disposalGuidelines;
 
+    // Relationship with Recycling_Tips table
+    // Operations performed on the WasteCategory (e.g., save, delete) will cascade to its associated RecyclingTip entities.
     @OneToMany(mappedBy = "wasteCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecyclingTip> recyclingTips;
 

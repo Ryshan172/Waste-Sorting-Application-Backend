@@ -1,6 +1,7 @@
 package com.enviro.assessment.grad001.ryshanramlall.dto;
 
 public class DisposalGuidelineResponseDTO {
+    // For data being retrieved from Disposal Guidelines Table
 
     private Long id;
     private String guideline;

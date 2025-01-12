@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecyclingTipRepository extends JpaRepository<RecyclingTip, Long> {
-    // Custom queries can be added here if needed
+    //   Repository interface for managing RecyclingTip entities
 }
