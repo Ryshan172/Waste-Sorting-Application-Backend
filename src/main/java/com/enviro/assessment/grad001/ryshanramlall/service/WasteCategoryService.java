@@ -28,6 +28,7 @@ public class WasteCategoryService {
                 .collect(Collectors.toList());
     }
 
+
     /**
      * Adds a new waste category by converting the provided Request DTO to an entity,
      * Adds to repository, and returns the saved category as a response.

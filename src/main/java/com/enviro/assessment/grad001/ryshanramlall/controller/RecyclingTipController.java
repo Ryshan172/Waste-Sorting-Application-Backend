@@ -1,9 +1,11 @@
 package com.enviro.assessment.grad001.ryshanramlall.controller;
 
+import com.enviro.assessment.grad001.ryshanramlall.dto.DisposalGuidelineResponseDTO;
 import com.enviro.assessment.grad001.ryshanramlall.dto.RecyclingTipDTO;
 import com.enviro.assessment.grad001.ryshanramlall.dto.RecyclingTipResponseDTO;
 import com.enviro.assessment.grad001.ryshanramlall.model.RecyclingTip;
 import com.enviro.assessment.grad001.ryshanramlall.service.RecyclingTipService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +30,31 @@ public class RecyclingTipController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RecyclingTipResponseDTO> getTipById(@PathVariable Long id) {
+        // Call the service method to retrieve the RecyclingTipResponseDTO by ID.
+        RecyclingTipResponseDTO responseDTO = service.getResponseDTOById(id);
+
+        // If the RecyclingTipResponseDTO is found, return it with a 200 OK status.
+        if (responseDTO != null) {
+            return ResponseEntity.ok(responseDTO);
+        }
+
+        // If the RecyclingTipResponseDTO is not found, return a 404 Not Found status.
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping
-    public ResponseEntity<RecyclingTipResponseDTO> createTip(@RequestBody RecyclingTipDTO tipDTO) {
+    public ResponseEntity<RecyclingTipResponseDTO> createTip(@Valid @RequestBody RecyclingTipDTO tipDTO) {
+        // Accepts a validated DTO as input and returns a response DTO
         RecyclingTipResponseDTO response = service.saveTip(tipDTO);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RecyclingTipResponseDTO> updateTip(@PathVariable Long id, @RequestBody RecyclingTipDTO tipDTO) {
+    public ResponseEntity<RecyclingTipResponseDTO> updateTip(
+            @PathVariable Long id,
+            @Valid @RequestBody RecyclingTipDTO tipDTO) {
         // The service handles updating the entity and returns a response DTO
         return service.updateTip(id, tipDTO)
                 .map(ResponseEntity::ok) // Return 200 OK with updated tip
@@ -53,5 +72,4 @@ public class RecyclingTipController {
 
         return ResponseEntity.notFound().build();  // Return 404 if not found
     }
-
 }

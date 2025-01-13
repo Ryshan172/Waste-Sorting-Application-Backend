@@ -103,4 +103,9 @@ public class RecyclingTipService {
     public void deleteTip(Long id) {
         repository.deleteById(id);
     }
+
+    // Public method to access toResponseDTO
+    public RecyclingTipResponseDTO getResponseDTOById(Long id) {
+        return getTipById(id).map(this::toResponseDTO).orElse(null);
+    }
 }

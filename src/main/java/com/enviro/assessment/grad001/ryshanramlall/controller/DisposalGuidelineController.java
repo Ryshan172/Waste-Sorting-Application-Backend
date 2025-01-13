@@ -3,6 +3,7 @@ package com.enviro.assessment.grad001.ryshanramlall.controller;
 import com.enviro.assessment.grad001.ryshanramlall.dto.DisposalGuidelineDTO;
 import com.enviro.assessment.grad001.ryshanramlall.dto.DisposalGuidelineResponseDTO;
 import com.enviro.assessment.grad001.ryshanramlall.service.DisposalGuidelineService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,28 +28,29 @@ public class DisposalGuidelineController {
         return service.getAllGuidelines();
     }
 
-    // Create a new disposal guideline using a DTO
-    @PostMapping
-    public ResponseEntity<DisposalGuidelineResponseDTO> createGuideline(@RequestBody DisposalGuidelineDTO guidelineDTO) {
-        try {
-            DisposalGuidelineResponseDTO responseDTO = service.saveGuideline(guidelineDTO);
-            return ResponseEntity.ok(responseDTO);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null); // Return 400 for invalid input
-        }
+    // Retrieve a disposal guideline by id
+    @GetMapping("/{id}")
+    public ResponseEntity<DisposalGuidelineResponseDTO> getGuidelineById(@PathVariable Long id) {
+        Optional<DisposalGuidelineResponseDTO> guideline = service.getGuidelineById(id);
+        return guideline
+                .map(ResponseEntity::ok)  // Return 200 OK with the found guideline
+                .orElseGet(() -> ResponseEntity.notFound().build());  // Return 404 Not Found if not found
     }
 
-    // Update an existing disposal guideline by ID
+    // Create a new disposal guideline using a DTO with validation
+    @PostMapping
+    public ResponseEntity<DisposalGuidelineResponseDTO> createGuideline(@Valid @RequestBody DisposalGuidelineDTO guidelineDTO) {
+        DisposalGuidelineResponseDTO responseDTO = service.saveGuideline(guidelineDTO);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    // Update an existing disposal guideline by ID with validation
     @PutMapping("/{id}")
     public ResponseEntity<DisposalGuidelineResponseDTO> updateGuideline(
-            @PathVariable Long id, @RequestBody DisposalGuidelineDTO updatedGuidelineDTO) {
-        try {
-            Optional<DisposalGuidelineResponseDTO> updated = service.updateGuideline(id, updatedGuidelineDTO);
-            return updated.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build()); // Return 404 if ID not found
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null); // Return 400 for invalid input
-        }
+            @PathVariable Long id, @Valid @RequestBody DisposalGuidelineDTO updatedGuidelineDTO) {
+        Optional<DisposalGuidelineResponseDTO> updated = service.updateGuideline(id, updatedGuidelineDTO);
+        return updated.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Return 404 if ID not found
     }
 
     // Delete a disposal guideline by ID
