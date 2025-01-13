@@ -13,7 +13,7 @@ public class DisposalGuideline {
     private Long disposalGuidelineId;
 
     @NotEmpty(message = "Guideline must not be empty")
-    @Column(length = 1000) // Optional, to enforce a max length for guidelines
+    @Column(length = 1000) // To enforce a max length for guidelines
     private String guideline;
 
     // All entries on Disposal_Guidelines table are linked to the Waste_Category table.

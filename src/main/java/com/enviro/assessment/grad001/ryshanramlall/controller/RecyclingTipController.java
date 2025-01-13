@@ -1,6 +1,5 @@
 package com.enviro.assessment.grad001.ryshanramlall.controller;
 
-import com.enviro.assessment.grad001.ryshanramlall.dto.DisposalGuidelineResponseDTO;
 import com.enviro.assessment.grad001.ryshanramlall.dto.RecyclingTipDTO;
 import com.enviro.assessment.grad001.ryshanramlall.dto.RecyclingTipResponseDTO;
 import com.enviro.assessment.grad001.ryshanramlall.model.RecyclingTip;
