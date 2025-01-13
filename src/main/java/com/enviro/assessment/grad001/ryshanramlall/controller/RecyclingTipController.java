@@ -70,6 +70,6 @@ public class RecyclingTipController {
             return ResponseEntity.noContent().build();  // Return 204 No Content
         }
 
-        return ResponseEntity.notFound().build();  // Return 404 if not found
+        return ResponseEntity.notFound().build();
     }
 }

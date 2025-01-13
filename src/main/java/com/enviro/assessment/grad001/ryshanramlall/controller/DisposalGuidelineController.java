@@ -44,13 +44,13 @@ public class DisposalGuidelineController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    // Update an existing disposal guideline by ID with validation
+    // Update existing disposal guideline by ID with validation
     @PutMapping("/{id}")
     public ResponseEntity<DisposalGuidelineResponseDTO> updateGuideline(
             @PathVariable Long id, @Valid @RequestBody DisposalGuidelineDTO updatedGuidelineDTO) {
         Optional<DisposalGuidelineResponseDTO> updated = service.updateGuideline(id, updatedGuidelineDTO);
         return updated.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build()); // Return 404 if ID not found
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Delete a disposal guideline by ID
@@ -60,6 +60,6 @@ public class DisposalGuidelineController {
             service.deleteGuideline(id);
             return ResponseEntity.noContent().build(); // Return 204 No Content
         }
-        return ResponseEntity.notFound().build(); // Return 404 if not found
+        return ResponseEntity.notFound().build();
     }
 }

@@ -72,8 +72,6 @@ public class RecyclingTipService {
             // Update the existing recycling tip with the new data from tipDTO
             existingTip.setTip(tipDTO.getTip());
 
-            // Since waste category shouldn't change, we don't modify it
-
             // Save the updated recycling tip
             RecyclingTip updatedTip = repository.save(existingTip);
 
